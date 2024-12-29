@@ -233,3 +233,35 @@
     padding: 10px;
   }
 }
+
+.flying-image {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 1000;
+  animation: flyAcrossRotate 8s linear;
+  opacity: 0;
+}
+
+@keyframes flyAcrossRotate {
+  0% {
+    left: -100px;
+    top: 50%;
+    transform: translate(0, -50%) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% + 100px);
+    top: 50%;
+    transform: translate(0, -50%) rotate(360deg);
+    opacity: 0;
+  }
+}

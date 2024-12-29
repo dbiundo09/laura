@@ -10,6 +10,19 @@ function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarDays, setCalendarDays] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showCharacter, setShowCharacter] = useState(false);
+  const [characterMessage, setCharacterMessage] = useState('');
+
+  const encouragingMessages = [
+    "You're doing great! 🌟",
+    "Keep going strong! 💪",
+    "What a wonderful day! 🌈",
+    "You've got this! ✨",
+    "Stay awesome! 🎉",
+    "You make the world better! 🌍",
+    "Sending positive vibes! ✌️",
+    "You're amazing! 🌟",
+  ];
 
   // Load data on initial render and month change
   useEffect(() => {
@@ -97,13 +110,23 @@ function App() {
       if (newDays[index].number !== null) {
         newDays[index] = {
           ...newDays[index],
-          number: newDays[index].number === 5 ? 1 : 
-                  newDays[index].number === 6 ? 1 :
-                  newDays[index].number + 1
+          number: newDays[index].number === 5 ? 6 :  // 5 goes to unknown (6)
+                  newDays[index].number === 6 ? 1 :  // unknown goes to sad (1)
+                  newDays[index].number + 1          // otherwise increment
         };
       }
       return newDays;
     });
+
+    if (Math.random() < 1.0) {
+      const randomMessage = encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
+      setCharacterMessage(randomMessage);
+      setShowCharacter(true);
+
+      setTimeout(() => {
+        setShowCharacter(false);
+      }, 2000);
+    }
   };
 
   const changeMonth = (offset) => {
@@ -128,11 +151,7 @@ function App() {
     });
   };
 
-  useEffect(() => {
-    const interval = setInterval(createFlyingText, 10000);
-    return () => clearInterval(interval);
-  }, []);
-
+  
   if (!isAuthenticated) {
     return <WelcomePage onLogin={handleLogin} />;
   }
@@ -147,6 +166,12 @@ function App() {
         onReset={handleReset}
       />
       <Statistics calendarDays={calendarDays} />
+      {showCharacter && (
+        <div className="character-container">
+          <div className="character">😊</div>
+          <div className="speech-bubble">{characterMessage}</div>
+        </div>
+      )}
     </div>
   );
 }

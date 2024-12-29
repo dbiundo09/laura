@@ -21,7 +21,7 @@ const WelcomePage = ({ onLogin }) => {
         <h1>Welcome, My Love! 💕</h1>
         
         <div className="puns-container">
-          <p>I like you for more than just your butt! ✨</p>
+          <p>I like you for so much more than just your butt!! ✨</p>
         </div>
 
 

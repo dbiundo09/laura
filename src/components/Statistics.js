@@ -5,15 +5,19 @@ const Statistics = ({ calendarDays }) => {
   const calculateStats = () => {
     if (!calendarDays.length) return null;
 
-    // Filter out empty days and unknown moods (6)
+    // Count total days including unknown moods
+    const totalDays = calendarDays.filter(day => day.date);
+    
+    // Filter out empty days and unknown moods (6) for calculations
     const validDays = calendarDays.filter(day => day.date && day.number !== 6);
     
-    if (!validDays.length) return null;
+    if (!totalDays.length) return null;
 
     // Calculate average happiness (1-5 scale)
-    const averageHappiness = validDays.reduce((sum, day) => sum + day.number, 0) / validDays.length;
+    const averageHappiness = validDays.length ? 
+      validDays.reduce((sum, day) => sum + day.number, 0) / validDays.length : 0;
     
-    // Find happiest week
+    // Find happiest week (excluding unknown moods)
     let happiestWeek = {
       startDate: null,
       average: 0
@@ -32,13 +36,13 @@ const Statistics = ({ calendarDays }) => {
       }
     }
 
-    // Count mood frequencies
-    const moodCounts = validDays.reduce((acc, day) => {
+    // Count mood frequencies including unknown
+    const moodCounts = totalDays.reduce((acc, day) => {
       acc[day.number] = (acc[day.number] || 0) + 1;
       return acc;
     }, {});
 
-    // Find most common mood
+    // Find most common mood (including unknown)
     let mostCommonMood = 0;
     let maxCount = 0;
     Object.entries(moodCounts).forEach(([mood, count]) => {
@@ -52,17 +56,20 @@ const Statistics = ({ calendarDays }) => {
       averageHappiness,
       happiestWeek,
       mostCommonMood,
-      moodCounts
+      moodCounts,
+      totalDays: totalDays.length,
+      unknownCount: totalDays.length - validDays.length
     };
   };
 
+  // Update getMoodEmoji to include unknown
   const getMoodEmoji = (number) => {
     const emojis = {
       1: '😢',
       2: '😕',
       3: '😊',
       4: '😄',
-      5: '🥰'
+      6: '❓'
     };
     return emojis[number] || '❓';
   };
@@ -101,14 +108,14 @@ const Statistics = ({ calendarDays }) => {
         <div className="stat-card">
           <h3>Mood Distribution</h3>
           <div className="mood-bars">
-            {[1, 2, 3, 4, 5].map(mood => (
+            {[1, 2, 3, 4].map(mood => (
               <div key={mood} className="mood-bar-container">
                 <div className="mood-label">{getMoodEmoji(mood)}</div>
                 <div className="mood-bar">
                   <div 
                     className="mood-bar-fill"
                     style={{ 
-                      width: `${((stats.moodCounts[mood] || 0) / Object.values(stats.moodCounts).reduce((a, b) => a + b, 0)) * 100}%`
+                      width: `${((stats.moodCounts[mood] || 0) / stats.totalDays) * 100}%`
                     }}
                   />
                 </div>

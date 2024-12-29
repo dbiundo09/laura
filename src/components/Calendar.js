@@ -17,8 +17,6 @@ function Calendar({ currentDate, calendarDays, changeMonth, incrementNumber, onR
         return { emoji: '😊', mood: 'Good' };
       case 4:
         return { emoji: '😄', mood: 'Happy' };
-      case 5:
-        return { emoji: '🥰', mood: 'Super Happy' };
       case 6:
       default:
         return { emoji: '❓', mood: 'Unknown' };
@@ -47,7 +45,7 @@ function Calendar({ currentDate, calendarDays, changeMonth, incrementNumber, onR
       <div className="mood-legend">
         <div className="legend-title">Laura's Mood Scale</div>
         <div className="legend-items">
-          {[1, 2, 3, 4, 5].map(num => (
+          {[1, 2, 3, 4].map(num => (
             <div key={num} className="legend-item">
               <span className="legend-emoji">{getMoodEmoji(num).emoji}</span>
               <span className="legend-text">{getMoodEmoji(num).mood}</span>
@@ -68,6 +66,7 @@ function Calendar({ currentDate, calendarDays, changeMonth, incrementNumber, onR
           <div 
             key={index} 
             className={`calendar-day ${!day.date ? 'empty' : ''}`}
+            data-mood={day.date ? day.number : null}
             onClick={() => day.date && incrementNumber(index)}
           >
             {day.date && (

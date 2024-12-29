@@ -97,20 +97,23 @@
 
 .legend-items {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 30px;
+  padding: 0 40px;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   background: white;
-  padding: 8px 15px;
+  padding: 10px 25px;
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
+  min-width: 100px;
+  justify-content: center;
 }
 
 .legend-item:hover {
@@ -139,18 +142,59 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   cursor: pointer;
-  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #eeeeee;
 }
 
-.calendar-day:not(.empty):hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(255, 64, 129, 0.2);
+/* Only style the happiest and saddest moods */
+.calendar-day[data-mood="1"] {
+  background: linear-gradient(to bottom right, #ffebee, #ffcdd2);
+  border: 2px solid #ef9a9a;
 }
 
+.calendar-day[data-mood="2"] {
+  background: linear-gradient(to bottom right, #fff3e0, #ffe0b2);
+  border: 2px solid #ffb74d;
+}
+
+.calendar-day[data-mood="3"] {
+  background: linear-gradient(to bottom right, #e8f5e9, #c8e6c9);
+  border: 2px solid #81c784;
+}
+
+.calendar-day[data-mood="4"] {
+  background: linear-gradient(to bottom right, #f3e5f5, #e1bee7);
+  border: 2px solid #ce93d8;
+}
+
+/* Hover effects */
+.calendar-day:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.calendar-day[data-mood="1"]:hover {
+  box-shadow: 0 5px 15px rgba(239, 154, 154, 0.4);
+}
+
+.calendar-day[data-mood="2"]:hover {
+  box-shadow: 0 5px 15px rgba(255, 183, 77, 0.4);
+}
+
+.calendar-day[data-mood="3"]:hover {
+  box-shadow: 0 5px 15px rgba(129, 199, 132, 0.4);
+}
+
+.calendar-day[data-mood="4"]:hover {
+  box-shadow: 0 5px 15px rgba(206, 147, 216, 0.4);
+}
+
+/* Keep empty days transparent */
 .calendar-day.empty {
   background: transparent;
+  border: none;
   box-shadow: none;
-  cursor: default;
 }
 
 .mood-emoji {
@@ -230,12 +274,13 @@
   }
 
   .legend-items {
-    gap: 8px;
+    gap: 20px;
+    padding: 0 20px;
   }
 
   .legend-item {
-    padding: 4px 8px;
-    font-size: 0.8em;
+    padding: 8px 20px;
+    min-width: 80px;
   }
 
   .calendar-header {
@@ -250,6 +295,18 @@
     width: 30px;
     height: 30px;
     font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  .legend-items {
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  .legend-item {
+    padding: 6px 15px;
+    min-width: 60px;
   }
 }
 
